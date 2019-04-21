@@ -4,24 +4,13 @@ import { getTraversalObj, convertToJson } from 'fast-xml-parser';
 
 dotenv.config();
 
-const xmlParserOptions = {
-  attributeNamePrefix: '@_',
-  attrNodeName: 'attr', // default is 'false'
-  textNodeName: '#text',
-  ignoreAttributes: true,
-  ignoreNameSpace: false,
-  allowBooleanAttributes: false,
-  parseNodeValue: true,
-  parseAttributeValue: false,
-  trimValues: true,
-  decodeHTMLchar: false,
-  cdataTagName: '__cdata', // default is 'false'
-  cdataPositionChar: '\\c'
-};
-
 const sendSuccessResponse = (res, data) => {
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ data }));
+};
+
+const sendErrorResponse = (res, error) => {
+  res.status(400).send({ message: error });
 };
 
 const generateURL = suffix => {
@@ -32,6 +21,20 @@ const generateURL = suffix => {
 };
 
 const xmlToJson = data => {
+  const xmlParserOptions = {
+    attributeNamePrefix: '@_',
+    attrNodeName: 'attr', // default is 'false'
+    textNodeName: '#text',
+    ignoreAttributes: true,
+    ignoreNameSpace: false,
+    allowBooleanAttributes: false,
+    parseNodeValue: true,
+    parseAttributeValue: false,
+    trimValues: true,
+    decodeHTMLchar: false,
+    cdataTagName: '__cdata', // default is 'false'
+    cdataPositionChar: '\\c'
+  };
   const tObj = getTraversalObj(data, xmlParserOptions);
 
   return convertToJson(tObj, xmlParserOptions);
@@ -50,6 +53,6 @@ export const getAPIData = async ({
 
     sendSuccessResponse(res, parsedData);
   } catch (error) {
-    console.log(error);
+    sendErrorResponse(res, error);
   }
 };
