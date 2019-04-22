@@ -1,4 +1,4 @@
-import { getAPIData } from '../utils/get-api-data';
+import { getAPIData } from '../utils/getAPIData';
 import { parseAuthor } from '../utils/parsers';
 
 export const author = (req, res) =>

@@ -1,7 +1,7 @@
-import { getAPIData } from '../utils/get-api-data';
+import { getAPIData } from '../utils/getAPIData';
 import { parseBook } from '../utils/parsers';
 
-export const bookSingle = (req, res) =>
+export const book = (req, res) =>
   getAPIData({
     urlSuffix: `book/show/${req.params.id}`,
     apiPropName: 'book',
