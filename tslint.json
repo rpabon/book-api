@@ -1,0 +1,18 @@
+{
+  "defaultSeverity": "warning",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  },
+  "rules": {
+    "max-classes-per-file": [true, 5, "exclude-class-expressions"],
+    "ordered-imports": [false],
+    "object-literal-sort-keys": [false],
+    "no-unused-variable": false,
+    "interface-name": false
+  }
+}
