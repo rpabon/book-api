@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import { EnvironmentVariables } from '../models/EnvironmentVariables';
 
 dotenv.config();
 
@@ -10,10 +11,4 @@ export function getEnvironmentVariables(): EnvironmentVariables {
     API_KEY: API_KEY || '',
     SERVER_PORT: Number(SERVER_PORT) || 3000
   };
-}
-
-interface EnvironmentVariables {
-  BASE_URL: string;
-  API_KEY: string;
-  SERVER_PORT: number;
 }

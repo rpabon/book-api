@@ -4,6 +4,7 @@ import { getEnvironmentVariables } from './utils/getEnvironmentVariables';
 import { search } from './routes/search';
 import { book } from './routes/book';
 import { author } from './routes/author';
+import { notFound } from './routes/notFound';
 
 const { SERVER_PORT } = getEnvironmentVariables();
 const app = express();
@@ -11,11 +12,9 @@ const app = express();
 app.get('/', search);
 app.get('/book/:id', book);
 app.get('/author/:id', author);
+app.get('*', notFound);
 
-app.get('*', (req: Request, res: Response) => {
-  res.status(404).send('Route not found!');
+app.listen(SERVER_PORT, () => {
+  // tslint:disable-next-line: no-console
+  console.log(chalk.black.bgYellow(`Listening on port ${SERVER_PORT}!`));
 });
-
-app.listen(SERVER_PORT, () =>
-  console.log(chalk.black.bgYellow(`Listening on portuano ${SERVER_PORT}!`))
-);

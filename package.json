@@ -4,10 +4,8 @@
   "description": "API for getting books from GoodReads",
   "main": "src/index.ts",
   "scripts": {
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "tsc",
-    "prestart": "npm run build",
-    "start": "nodemon -w dist --exec babel-node dist/index.js",
+    "dev": "nodemon",
+    "start": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ricardo Pabón",
