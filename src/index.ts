@@ -9,7 +9,7 @@ import { notFound } from './routes/notFound';
 const { SERVER_PORT } = getEnvironmentVariables();
 const app = express();
 
-app.get('/', search);
+app.get(['/', '/search'], search);
 app.get('/book/:id', book);
 app.get('/author/:id', author);
 app.get('*', notFound);
