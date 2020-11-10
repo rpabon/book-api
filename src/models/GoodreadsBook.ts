@@ -21,7 +21,7 @@ export interface GoodreadsBook {
     book: GoodreadsBook[];
   };
   authors: {
-    author: GoodreadsAuthorInfo;
+    author: GoodreadsAuthorInfo[] | GoodreadsAuthorInfo;
   };
   work: {
     id: number;

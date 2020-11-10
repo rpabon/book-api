@@ -5,5 +5,5 @@ export function getCdata(obj: Cdata | string | number): string {
     return String(obj);
   }
 
-  return obj.__cdata || '';
+  return (obj && obj.__cdata) || '';
 }

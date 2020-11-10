@@ -14,13 +14,13 @@ export function parseAuthor(author: GoodreadsAuthor): Author {
     hometown: author.hometown,
     born_at: author.born_at,
     died_at: author.died_at,
-    books: getBooks(author)
+    books: getBooks(author),
   };
 }
 
 function getBooks(author: GoodreadsAuthor): Book[] {
   try {
-    author.books.book.map(book => parseBook(book));
+    return author.books.book.map((book) => parseBook(book));
   } catch (error) {
     return [];
   }

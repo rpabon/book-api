@@ -16,29 +16,40 @@ export function parseBook(book: GoodreadsBook): Book {
     description: getCdata(book.description),
     num_pages: Number(getCdata(book.num_pages)),
     similar_books: getSimilarBooks(book),
-    year: getYear(book)
+    year: getYear(book),
   };
 }
 
-function getAuthorId(book: GoodreadsBook): number {
+function getAuthorId({ authors }: GoodreadsBook): number {
   try {
-    return Number(book.authors.author.id);
+    const { author } = authors;
+    const id = Array.isArray(author) ? author[0].id : author.id;
+
+    return Number(id) || 0;
   } catch (error) {
     return 0;
   }
 }
 
-function getAuthorName(book: GoodreadsBook): string {
+function getAuthorName({ authors }: GoodreadsBook): string {
   try {
-    return book.authors.author.name;
+    const { author } = authors;
+    const name = Array.isArray(author) ? author[0].name : author.name;
+
+    return name || '';
   } catch (error) {
     return '';
   }
 }
 
-function getAuthorImageURL(book: GoodreadsBook): string {
+function getAuthorImageURL({ authors }: GoodreadsBook): string {
   try {
-    return book.authors.author.image_url;
+    const { author } = authors;
+    const image = Array.isArray(author)
+      ? author[0].image_url
+      : author.image_url;
+
+    return getCdata(image);
   } catch (error) {
     return '';
   }
@@ -48,7 +59,10 @@ function getTitle(book: GoodreadsBook): string {
   const { work, title, title_without_series } = book;
 
   return (
-    (work && work.original_title) || getCdata(title) || title_without_series
+    (work && work.original_title) ||
+    getCdata(title) ||
+    title_without_series ||
+    title
   );
 }
 
@@ -60,7 +74,7 @@ function getYear(book: GoodreadsBook): number {
 
 function getSimilarBooks(book: GoodreadsBook): Book[] {
   try {
-    book.similar_books.book.map(b => parseBook(b));
+    return book.similar_books.book.map((b) => parseBook(b));
   } catch (error) {
     return [];
   }
