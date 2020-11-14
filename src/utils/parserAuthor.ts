@@ -7,6 +7,7 @@ import { parseBook } from './parseBook';
 export function parseAuthor(author: GoodreadsAuthor): Author {
   return {
     id: author.id,
+    name: author.name,
     large_image_url: getCdata(author.large_image_url),
     image_url: getCdata(author.image_url),
     small_image_url: getCdata(author.small_image_url),
