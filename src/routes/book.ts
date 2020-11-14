@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { fetchData } from '../utils/fetchData';
+import getURLSuffix from '../utils/getURLSuffix';
 import { parseBook } from '../utils/parseBook';
 
 export const book = (req: Request, res: Response) => {
-  fetchData(`book/show/${req.params.id}`, 'book', parseBook, res);
+  const urlSuffix = getURLSuffix.book(req.params.id as string);
+
+  fetchData(urlSuffix, 'book', parseBook, res);
 };

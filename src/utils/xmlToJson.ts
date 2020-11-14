@@ -14,10 +14,10 @@ const xmlParserOptions = {
   trimValues: true,
   decodeHTMLchar: false,
   cdataTagName: '__cdata', // default is 'false'
-  cdataPositionChar: '\\c'
+  cdataPositionChar: '\\c',
 };
 
-export function xmlToJson(xmlData: string): ResponseCriteria {
+export function xmlToJson(xmlData: string): Partial<ResponseCriteria> {
   const tObj = getTraversalObj(xmlData, xmlParserOptions);
   const { GoodreadsResponse }: IGoodreadsResponse = convertToJson(
     tObj,
