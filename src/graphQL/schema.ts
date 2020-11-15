@@ -8,11 +8,9 @@ import {
 import { SearchType } from './SearchType';
 import { BookType } from './BookType';
 import { AuthorType } from './AuthorType';
-import getURLSuffix from '../utils/getURLSuffix';
-import { getResponseCriterion } from '../utils/getResponseCriterion';
-import { parseList } from '../utils/parseList';
-import { parseBook } from '../utils/parseBook';
-import { parseAuthor } from '../utils/parserAuthor';
+import { fetchSearchData } from '../utils/fetchSearchData';
+import { fetchBookData } from '../utils/fetchBookData';
+import { fetchAuthorData } from '../utils/fetchAuthorData';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
@@ -20,13 +18,11 @@ const RootQuery = new GraphQLObjectType({
     search: {
       type: new GraphQLList(SearchType),
       args: {
-        term: { type: GraphQLString },
+        q: { type: GraphQLString },
       },
       async resolve(_, args) {
-        const suffix = getURLSuffix.search(args.term);
-        const { search } = await getResponseCriterion(suffix);
-
-        return parseList(search);
+        const searchRes = await fetchSearchData(args.q);
+        return searchRes;
       },
     },
     book: {
@@ -35,10 +31,8 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLInt },
       },
       async resolve(_, args) {
-        const urlSuffix = getURLSuffix.book(args.id);
-        const { book } = await getResponseCriterion(urlSuffix);
-
-        return parseBook(book);
+        const bookRes = await fetchBookData(args.id);
+        return bookRes;
       },
     },
     author: {
@@ -47,14 +41,11 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLInt },
       },
       async resolve(_, args) {
-        const urlSuffix = getURLSuffix.author(args.id);
-        const { author } = await getResponseCriterion(urlSuffix);
-
-        return parseAuthor(author);
+        const authorRes = await fetchAuthorData(args.id);
+        return authorRes;
       },
     },
   },
 });
 
-//@ts-ignore
 export const schema = new GraphQLSchema({ query: RootQuery });

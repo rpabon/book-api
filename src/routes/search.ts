@@ -1,10 +1,16 @@
 import { Request, Response } from 'express';
-import { fetchData } from '../utils/fetchData';
-import { parseList } from '../utils/parseList';
-import getSearchURLSuffix from '../utils/getURLSuffix';
+import { fetchSearchData } from '../utils/fetchSearchData';
+import {
+  sendFailureResponse,
+  sendSuccessResponse,
+} from '../utils/sendResponse';
 
-export function search(req: Request, res: Response) {
-  const urlSuffix = getSearchURLSuffix.search(req.query.q as string);
+export async function search(req: Request, res: Response) {
+  try {
+    const bookInfos = await fetchSearchData(req.query.q as string);
 
-  fetchData(urlSuffix, 'search', parseList, res);
+    sendSuccessResponse('search', bookInfos, res);
+  } catch (error) {
+    sendFailureResponse(error, res);
+  }
 }

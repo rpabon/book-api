@@ -1,17 +1,15 @@
 import { Response } from 'express';
 import { SearchCriteria } from '../models/SearchCriteria';
-import { ParsedData } from '../models/ParsedData';
 
-export function sendSuccessResponse(
-  res: Response,
-  parsedData: ResponseParseData
-) {
+export function sendSuccessResponse<T>(
+  searchCriterion: SearchCriteria,
+  responseData: T,
+  res: Response
+): void {
   res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(parsedData));
+  res.end(JSON.stringify({ [searchCriterion]: responseData }));
 }
 
-export function sendErrorResponse(res: Response, error: Error) {
+export function sendFailureResponse(error: Error, res: Response): void {
   res.status(400).send({ message: error });
 }
-
-type ResponseParseData = { [criterion in SearchCriteria]?: ParsedData };

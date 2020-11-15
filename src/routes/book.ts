@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
-import { fetchData } from '../utils/fetchData';
-import getURLSuffix from '../utils/getURLSuffix';
-import { parseBook } from '../utils/parseBook';
+import { fetchBookData } from '../utils/fetchBookData';
+import {
+  sendSuccessResponse,
+  sendFailureResponse,
+} from '../utils/sendResponse';
 
-export const book = (req: Request, res: Response) => {
-  const urlSuffix = getURLSuffix.book(req.params.id as string);
-
-  fetchData(urlSuffix, 'book', parseBook, res);
-};
+export async function book(req: Request, res: Response) {
+  try {
+    const bookRes = await fetchBookData(req.params.id);
+    sendSuccessResponse('book', bookRes, res);
+  } catch (error) {
+    sendFailureResponse(error, res);
+  }
+}
