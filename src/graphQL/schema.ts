@@ -31,7 +31,8 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLInt },
       },
       async resolve(_, args) {
-        const bookRes = await fetchBookData(args.id);
+        const id = String(args.id);
+        const bookRes = await fetchBookData(id);
         return bookRes;
       },
     },
@@ -41,7 +42,8 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLInt },
       },
       async resolve(_, args) {
-        const authorRes = await fetchAuthorData(args.id);
+        const id = String(args.id);
+        const authorRes = await fetchAuthorData(id);
         return authorRes;
       },
     },

@@ -20,9 +20,9 @@ function parseBookInfo(bookInfo: GoodreadsBookInfo): BookInfo {
     author: author && author.name,
     author_id: author && author.id,
     title: (title || '').replace(/ *\([^)]*\) */g, ''),
-    url: image_url,
-    url_small: small_image_url,
+    image_url: image_url || '',
+    small_image_url: small_image_url || '',
     rating: bookInfo.average_rating,
-    year: bookInfo.original_publication_year
+    year: bookInfo.original_publication_year,
   };
 }

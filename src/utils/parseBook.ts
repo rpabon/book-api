@@ -9,7 +9,7 @@ export function parseBook(book: GoodreadsBook): Book {
     author_id: getAuthorId(book),
     author_image_url: getAuthorImageURL(book),
     title: getTitle(book),
-    rating: book.average_rating,
+    rating: book.average_rating || 0,
     image_url: getCdata(book.image_url),
     small_image_url: getCdata(book.small_image_url),
     isbn: Number(getCdata(book.isbn)),
@@ -69,7 +69,7 @@ function getTitle(book: GoodreadsBook): string {
 function getYear(book: GoodreadsBook): number {
   const { work, publication_year } = book;
 
-  return (work && work.original_publication_year) || publication_year;
+  return (work && work.original_publication_year) || publication_year || 0;
 }
 
 function getSimilarBooks(book: GoodreadsBook): Book[] {

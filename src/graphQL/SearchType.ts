@@ -6,8 +6,8 @@ export const SearchType = new GraphQLObjectType({
   name: 'Search',
   fields: (): GraphQLField<BookInfo> => ({
     id: { type: GraphQLInt },
-    url: { type: GraphQLString },
-    url_small: { type: GraphQLString },
+    image_url: { type: GraphQLString },
+    small_image_url: { type: GraphQLString },
     title: { type: GraphQLString },
     author: { type: GraphQLString },
     author_id: { type: GraphQLInt },

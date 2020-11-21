@@ -1,7 +1,7 @@
 export interface BookInfo {
   id: number;
-  url: string;
-  url_small: string;
+  image_url: string;
+  small_image_url: string;
   title: string;
   author: string;
   author_id: number;

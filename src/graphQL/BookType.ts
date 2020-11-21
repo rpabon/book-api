@@ -3,6 +3,7 @@ import {
   GraphQLInt,
   GraphQLString,
   GraphQLList,
+  GraphQLFloat,
 } from 'graphql';
 import { GraphQLField } from '../models/GraphQLField';
 import { Book } from '../models/Book';
@@ -14,7 +15,7 @@ export const BookType = new GraphQLObjectType({
     author_id: { type: GraphQLInt },
     author: { type: GraphQLString },
     title: { type: GraphQLString },
-    rating: { type: GraphQLInt },
+    rating: { type: GraphQLFloat },
     image_url: { type: GraphQLString },
     small_image_url: { type: GraphQLString },
     isbn: { type: GraphQLInt },
