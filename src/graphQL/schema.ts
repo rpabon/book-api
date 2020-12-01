@@ -1,3 +1,4 @@
+import { RedisClient } from 'redis';
 import {
   GraphQLObjectType,
   GraphQLString,
@@ -8,6 +9,7 @@ import {
 import { SearchType } from './SearchType';
 import { BookType } from './BookType';
 import { AuthorType } from './AuthorType';
+import { redisQueryResolver, redisResolver } from '../utils/redis';
 import { fetchSearchData } from '../utils/fetchSearchData';
 import { fetchBookData } from '../utils/fetchBookData';
 import { fetchAuthorData } from '../utils/fetchAuthorData';
@@ -20,9 +22,14 @@ const RootQuery = new GraphQLObjectType({
       args: {
         q: { type: GraphQLString },
       },
-      async resolve(_, args) {
-        const searchRes = await fetchSearchData(args.q);
-        return searchRes;
+      async resolve(_, args, { redisClient }: Context) {
+        const search = await redisQueryResolver(
+          redisClient,
+          fetchSearchData,
+          args.q
+        );
+        
+        return search;
       },
     },
     book: {
@@ -30,10 +37,10 @@ const RootQuery = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      async resolve(_, args) {
-        const id = String(args.id);
-        const bookRes = await fetchBookData(id);
-        return bookRes;
+      async resolve(_, args, { redisClient }: Context) {
+        const key = String(args.id);
+        const book = await redisResolver(redisClient, fetchBookData, key);
+        return book;
       },
     },
     author: {
@@ -41,13 +48,17 @@ const RootQuery = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      async resolve(_, args) {
-        const id = String(args.id);
-        const authorRes = await fetchAuthorData(id);
-        return authorRes;
+      async resolve(_, args, { redisClient }: Context) {
+        const key = String(args.id);
+        const author = await redisResolver(redisClient, fetchAuthorData, key);
+        return author;
       },
     },
   },
 });
 
 export const schema = new GraphQLSchema({ query: RootQuery });
+
+interface Context {
+  redisClient: RedisClient;
+}

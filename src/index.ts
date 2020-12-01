@@ -16,19 +16,29 @@ const redisClient = redis.createClient(REDIS_URL);
 
 app.use(cors());
 
-app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    context: { redisClient },
+    graphiql: true,
+  })
+);
 
 app.get(
   ['/', '/search'],
   cacheHandler('search', redisClient),
   search(redisClient)
 );
+
 app.get('/book/:id', cacheHandler('book', redisClient), book(redisClient));
+
 app.get(
   '/author/:id',
   cacheHandler('author', redisClient),
   author(redisClient)
 );
+
 app.get('*', notFound);
 
 app.listen(PORT, () => {

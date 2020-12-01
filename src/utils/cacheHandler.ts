@@ -1,25 +1,25 @@
 import { NextFunction, Request, Response } from 'express';
 import { RedisClient } from 'redis';
 import { SearchCriteria } from '../models/SearchCriteria';
-import { getRedisKey } from './redis';
+import { getRedisKey, getRedisData } from './redis';
 import { sendSuccessResponse } from './sendResponse';
 
 export function cacheHandler(
   searchCriteria: SearchCriteria,
   redisClient: RedisClient
 ) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    redisClient.get(getRedisKey(req), (error, data) => {
-      if (error) {
-        throw error;
-      }
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const key = getRedisKey(req);
+      const parsedData = await getRedisData(redisClient, key);
 
-      if (data !== null) {
-        const parsedData = JSON.parse(data);
+      if (parsedData !== null) {
         sendSuccessResponse(searchCriteria, parsedData, res);
       } else {
         next();
       }
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
