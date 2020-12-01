@@ -1,14 +1,14 @@
 import * as dotenv from 'dotenv';
-import { EnvironmentVariables } from '../models/EnvironmentVariables';
 
 dotenv.config();
 
-const { BASE_URL, API_KEY, PORT } = process.env;
+const { BASE_URL, API_KEY, PORT, REDIS_URL } = process.env;
 
-export function getEnvironmentVariables(): EnvironmentVariables {
+export function getEnvironmentVariables() {
   return {
-    BASE_URL: BASE_URL || '',
-    API_KEY: API_KEY || '',
-    SERVER_PORT: Number(PORT) || 3000,
+    BASE_URL,
+    API_KEY,
+    REDIS_URL,
+    PORT: Number(PORT) || 3000,
   };
 }
